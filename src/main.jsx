@@ -386,6 +386,11 @@ function RecipeCard({ recipe, featured = false, compact = false, onToggleFavorit
           <Heart size={18} fill={recipe.isFavorite ? 'currentColor' : 'none'} />
         </button>
       </div>
+      {recipe.image && (
+        <a href={recipe.videoUrl} target="_blank" rel="noreferrer" className="recipe-image-link" aria-label={`Open video for ${recipe.title}`}>
+          <img src={recipe.image} alt={recipe.title} className="recipe-image" loading="lazy" />
+        </a>
+      )}
       {recipe.protein && <p><strong>Main protein:</strong> {recipe.protein}</p>}
       <p><strong>Seasoning:</strong> {recipe.seasoningName} {recipe.hasSeasoning ? '✅' : '🛒'}</p>
       {!recipe.hasSeasoning && <a className="buy-link" href={recipe.seasoningUrl} target="_blank" rel="noreferrer">Buy {recipe.seasoningName}</a>}
@@ -396,7 +401,7 @@ function RecipeCard({ recipe, featured = false, compact = false, onToggleFavorit
         <details>
           <summary>Cooking steps</summary>
           <ol>{recipe.steps.map((step) => <li key={step}>{step}</li>)}</ol>
-          <a href={recipe.videoUrl} target="_blank" rel="noreferrer">Open related CarnivorousChef videos</a>
+          <a href={recipe.videoUrl} target="_blank" rel="noreferrer">Open related CarnivorousChef video</a>
         </details>
       )}
     </article>

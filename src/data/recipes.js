@@ -10,9 +10,10 @@ export const RECIPES = [
     strictness: 'carnivore-ish',
     ingredients: ['ground beef', 'eggs', 'cheese', 'butter'],
     optional: ['sour cream', 'pork rinds'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/gg8igLDqA3E/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Brown ground beef in a skillet.', 'Season with Taco Shake to taste.', 'Scramble eggs into the beef or fry them on the side.', 'Top with cheese and serve hot.'],
-    videoUrl: 'https://www.youtube.com/@CarnivorousChef/videos'
+    videoUrl: 'https://www.youtube.com/watch?v=gg8igLDqA3E'
   },
   {
     id: 'steak-and-eggs',
@@ -25,9 +26,10 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['steak', 'eggs', 'butter'],
     optional: ['bacon'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/zt14mv_eIko/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Pat steak dry and season with Steak Dust.', 'Sear in butter or tallow until desired doneness.', 'Rest steak while frying eggs.', 'Serve together with pan drippings.'],
-    videoUrl: 'https://www.youtube.com/@CarnivorousChef/videos'
+    videoUrl: 'https://www.youtube.com/shorts/zt14mv_eIko'
   },
   {
     id: 'spicy-ranch-chicken',
@@ -40,9 +42,10 @@ export const RECIPES = [
     strictness: 'carnivore-ish',
     ingredients: ['chicken', 'eggs', 'pork rinds', 'butter'],
     optional: ['cream cheese'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/2jZT5uqvB6I/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Cut chicken into bite-sized pieces.', 'Coat with egg wash and crushed pork rinds.', 'Season with Spicy Ranch.', 'Air fry or pan fry until cooked through.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+chicken+tenders'
+    videoUrl: 'https://www.youtube.com/watch?v=2jZT5uqvB6I'
   },
   {
     id: 'smoky-burger-plate',
@@ -55,9 +58,10 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['ground beef', 'cheese', 'bacon'],
     optional: ['eggs', 'butter'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/ZNVF79bS1Wc/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Form ground beef into patties.', 'Season with Smoke Stack on both sides.', 'Cook patties in a skillet or on the grill.', 'Top with cheese and bacon.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+burger'
+    videoUrl: 'https://www.youtube.com/watch?v=ZNVF79bS1Wc'
   },
   {
     id: 'cajun-surf-turf',
@@ -70,9 +74,10 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['ground beef', 'shrimp', 'eggs', 'butter'],
     optional: ['cheese'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/9Af6Y7hB9WQ/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Make small beef patties or meatballs.', 'Cook shrimp in butter with Gator Bite.', 'Combine shrimp and beef in the skillet.', 'Serve with fried eggs or melted cheese.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+Cajun+meatball+shrimp'
+    videoUrl: 'https://www.youtube.com/watch?v=9Af6Y7hB9WQ'
   },
   {
     id: 'steak-dust-burger-scramble',
@@ -85,9 +90,10 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['ground beef', 'eggs', 'butter'],
     optional: ['cheese', 'bacon'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/BY3mrbS9Hyc/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Brown ground beef in butter.', 'Add Steak Dust and stir well.', 'Scramble in eggs until just set.', 'Top with bacon or cheese if desired.'],
-    videoUrl: 'https://www.youtube.com/@CarnivorousChef/videos'
+    videoUrl: 'https://www.youtube.com/watch?v=BY3mrbS9Hyc'
   },
   {
     id: 'taco-shake-egg-bake',
@@ -100,9 +106,10 @@ export const RECIPES = [
     strictness: 'carnivore-ish',
     ingredients: ['eggs', 'ground beef', 'cheese'],
     optional: ['sour cream'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/J_zBdYrzVQk/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Brown ground beef with Taco Shake.', 'Whisk eggs and pour into a baking dish.', 'Add beef and cheese.', 'Bake until firm and slice for meal prep.'],
-    videoUrl: 'https://www.youtube.com/@CarnivorousChef/videos'
+    videoUrl: 'https://www.youtube.com/watch?v=J_zBdYrzVQk'
   },
   {
     id: 'smoke-stack-bacon-meatballs',
@@ -115,9 +122,10 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['ground beef', 'bacon', 'eggs'],
     optional: ['cheese'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/2v1Zrrt-k10/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Mix ground beef, chopped bacon, eggs, and Smoke Stack.', 'Roll into meatballs.', 'Bake or air fry until cooked through.', 'Store extras for quick meals.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+meatballs'
+    videoUrl: 'https://www.youtube.com/watch?v=2v1Zrrt-k10'
   },
   {
     id: 'spicy-ranch-egg-salad',
@@ -130,9 +138,10 @@ export const RECIPES = [
     strictness: 'carnivore-ish',
     ingredients: ['eggs', 'bacon', 'cream cheese'],
     optional: ['cheese', 'pork rinds'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/w98yYpM2ZPs/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Chop boiled eggs.', 'Mix with softened cream cheese and Spicy Ranch.', 'Fold in crumbled bacon.', 'Serve with pork rinds if desired.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+egg+salad'
+    videoUrl: 'https://www.youtube.com/watch?v=w98yYpM2ZPs'
   },
   {
     id: 'gator-bite-salmon-butter-bites',
@@ -145,8 +154,9 @@ export const RECIPES = [
     strictness: 'strict carnivore',
     ingredients: ['fish', 'butter', 'eggs'],
     optional: ['shrimp'],
-    image: '',
+    image: 'https://i.ytimg.com/vi/9Af6Y7hB9WQ/hqdefault.jpg',
+    imageSource: 'YouTube thumbnail from CarnivorousChef',
     steps: ['Cut fish into chunks.', 'Season with Gator Bite.', 'Pan sear in butter.', 'Serve with fried eggs or shrimp.'],
-    videoUrl: 'https://www.youtube.com/results?search_query=CarnivorousChef+fish'
+    videoUrl: 'https://www.youtube.com/watch?v=9Af6Y7hB9WQ'
   }
 ];

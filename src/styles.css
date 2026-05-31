@@ -90,3 +90,29 @@ a { color: var(--accent-2); }
   .action-row, .input-row { flex-direction: column; }
   .photo-input-row select { max-width: none; }
 }
+
+
+.recipe-image-link {
+  display: block;
+  margin: 12px 0 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #140d09;
+}
+
+.recipe-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  transition: transform .18s ease;
+}
+
+.recipe-image-link:hover .recipe-image {
+  transform: scale(1.025);
+}
+
+.recipe-card.compact .recipe-image-link {
+  display: none;
+}
