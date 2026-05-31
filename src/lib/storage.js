@@ -1,7 +1,9 @@
 const KEYS = {
   kitchen: 'ccmp:kitchen-items',
+  kitchenPhotos: 'ccmp:kitchen-photos',
   seasonings: 'ccmp:owned-seasonings',
-  mealPlan: 'ccmp:meal-plan'
+  mealPlan: 'ccmp:meal-plan',
+  favorites: 'ccmp:favorites'
 };
 
 export function loadJson(key, fallback) {
@@ -25,6 +27,14 @@ export function saveKitchenItems(items) {
   saveJson(KEYS.kitchen, items);
 }
 
+export function getKitchenPhotos() {
+  return loadJson(KEYS.kitchenPhotos, []);
+}
+
+export function saveKitchenPhotos(photos) {
+  saveJson(KEYS.kitchenPhotos, photos);
+}
+
 export function getOwnedSeasonings() {
   return loadJson(KEYS.seasonings, ['steak-dust', 'taco-shake']);
 }
@@ -39,4 +49,12 @@ export function getMealPlan() {
 
 export function saveMealPlan(plan) {
   saveJson(KEYS.mealPlan, plan);
+}
+
+export function getFavorites() {
+  return loadJson(KEYS.favorites, []);
+}
+
+export function saveFavorites(ids) {
+  saveJson(KEYS.favorites, ids);
 }

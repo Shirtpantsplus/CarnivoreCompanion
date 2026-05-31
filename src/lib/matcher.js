@@ -1,5 +1,5 @@
 export function normalize(value) {
-  return value.toLowerCase().trim();
+  return String(value || '').toLowerCase().trim();
 }
 
 export function matchRecipes(recipes, kitchenItems, ownedSeasoningIds) {
@@ -8,13 +8,16 @@ export function matchRecipes(recipes, kitchenItems, ownedSeasoningIds) {
   return recipes
     .map((recipe) => {
       const required = recipe.ingredients.map(normalize);
-      const matched = required.filter((item) => pantry.has(item));
+      const optional = (recipe.optional || []).map(normalize);
+      const matched = recipe.ingredients.filter((item) => pantry.has(normalize(item)));
+      const optionalMatched = (recipe.optional || []).filter((item) => pantry.has(normalize(item)));
       const missing = recipe.ingredients.filter((item) => !pantry.has(normalize(item)));
       const hasSeasoning = ownedSeasoningIds.includes(recipe.seasoningId);
-      const ingredientScore = matched.length / required.length;
-      const score = Math.round((ingredientScore * 80) + (hasSeasoning ? 20 : 0));
+      const ingredientScore = required.length ? matched.length / required.length : 0;
+      const optionalBonus = optional.length ? Math.min(optionalMatched.length / optional.length, 1) * 5 : 0;
+      const score = Math.min(100, Math.round((ingredientScore * 75) + optionalBonus + (hasSeasoning ? 20 : 0)));
 
-      return { ...recipe, matched, missing, hasSeasoning, score };
+      return { ...recipe, matched, optionalMatched, missing, hasSeasoning, score };
     })
     .sort((a, b) => b.score - a.score || a.prepTime - b.prepTime);
 }
