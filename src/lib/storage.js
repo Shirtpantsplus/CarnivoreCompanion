@@ -1,6 +1,6 @@
 const KEYS = {
   kitchen: 'ccmp:kitchen-items',
-  kitchenPhotos: 'ccmp:kitchen-photos',
+  photos: 'ccmp:kitchen-photos',
   seasonings: 'ccmp:owned-seasonings',
   mealPlan: 'ccmp:meal-plan',
   favorites: 'ccmp:favorites'
@@ -20,7 +20,12 @@ export function saveJson(key, value) {
 }
 
 export function getKitchenItems() {
-  return loadJson(KEYS.kitchen, ['ground beef', 'eggs', 'butter', 'cheese']);
+  return loadJson(KEYS.kitchen, [
+    { name: 'ground beef', addedAt: new Date().toISOString() },
+    { name: 'eggs', addedAt: new Date().toISOString() },
+    { name: 'butter', addedAt: new Date().toISOString() },
+    { name: 'cheese', addedAt: new Date().toISOString() }
+  ]);
 }
 
 export function saveKitchenItems(items) {
@@ -28,11 +33,11 @@ export function saveKitchenItems(items) {
 }
 
 export function getKitchenPhotos() {
-  return loadJson(KEYS.kitchenPhotos, []);
+  return loadJson(KEYS.photos, []);
 }
 
 export function saveKitchenPhotos(photos) {
-  saveJson(KEYS.kitchenPhotos, photos);
+  saveJson(KEYS.photos, photos);
 }
 
 export function getOwnedSeasonings() {
@@ -55,6 +60,6 @@ export function getFavorites() {
   return loadJson(KEYS.favorites, []);
 }
 
-export function saveFavorites(ids) {
-  saveJson(KEYS.favorites, ids);
+export function saveFavorites(favorites) {
+  saveJson(KEYS.favorites, favorites);
 }

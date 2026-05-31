@@ -14,8 +14,8 @@ export function matchRecipes(recipes, kitchenItems, ownedSeasoningIds) {
       const missing = recipe.ingredients.filter((item) => !pantry.has(normalize(item)));
       const hasSeasoning = ownedSeasoningIds.includes(recipe.seasoningId);
       const ingredientScore = required.length ? matched.length / required.length : 0;
-      const optionalBonus = optional.length ? Math.min(optionalMatched.length / optional.length, 1) * 5 : 0;
-      const score = Math.min(100, Math.round((ingredientScore * 75) + optionalBonus + (hasSeasoning ? 20 : 0)));
+      const optionalBoost = optional.length ? Math.min(optionalMatched.length / optional.length, 1) * 5 : 0;
+      const score = Math.min(100, Math.round((ingredientScore * 75) + (hasSeasoning ? 20 : 0) + optionalBoost));
 
       return { ...recipe, matched, optionalMatched, missing, hasSeasoning, score };
     })
