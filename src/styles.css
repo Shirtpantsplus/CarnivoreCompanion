@@ -301,3 +301,247 @@ textarea {
   .small-input, .section-title-row select { max-width: none; }
   .section-title-row { flex-direction: column; align-items: stretch; }
 }
+
+/* v1.6 visual refresh: Carnivore Companion storefront/bottle-inspired aesthetic */
+:root {
+  --bg: #070604;
+  --panel: #12100c;
+  --panel-2: #1d1710;
+  --panel-3: #2a1f14;
+  --text: #fffaf0;
+  --muted: #d3b98e;
+  --accent: #f6a21a;
+  --accent-2: #ffe0a3;
+  --danger: #ff7068;
+  --border: rgba(255, 216, 148, 0.22);
+  --bottle-black: #080705;
+  --label-cream: #f7e8c2;
+  --label-gold: #c78620;
+  --smoke: rgba(255,255,255,.055);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(246,162,26,.22), transparent 28%),
+    radial-gradient(circle at 95% 10%, rgba(156,61,18,.22), transparent 28%),
+    linear-gradient(135deg, #050403 0%, #100b07 45%, #070604 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .08;
+  background-image:
+    linear-gradient(30deg, rgba(255,255,255,.12) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.12) 87.5%, rgba(255,255,255,.12)),
+    linear-gradient(150deg, rgba(255,255,255,.12) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,.12) 87.5%, rgba(255,255,255,.12));
+  background-size: 42px 72px;
+}
+
+.app-shell { grid-template-columns: 310px 1fr; }
+.sidebar {
+  background: linear-gradient(180deg, rgba(8,7,5,.98), rgba(18,14,9,.96));
+  border-right: 1px solid rgba(247,232,194,.18);
+  box-shadow: 18px 0 60px rgba(0,0,0,.28);
+}
+
+.promo-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  justify-content: center;
+  border: 1px solid rgba(246,162,26,.42);
+  background: linear-gradient(135deg, rgba(246,162,26,.18), rgba(199,134,32,.08));
+  color: var(--label-cream);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: .78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 18px;
+}
+
+.brand-card {
+  padding: 16px;
+  border: 1px solid rgba(247,232,194,.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(247,232,194,.08), rgba(246,162,26,.09)),
+    #0d0b08;
+}
+.brand-icon {
+  background: radial-gradient(circle at 30% 20%, #ffe0a3, #f6a21a 45%, #5a210c 100%);
+  color: #160b04;
+  border: 1px solid rgba(255,224,163,.5);
+}
+.brand-card h1 { letter-spacing: .02em; text-transform: uppercase; font-size: .98rem; }
+.brand-card p { color: var(--accent-2); font-weight: 700; }
+
+.nav-item {
+  color: #d8c59d;
+  border-radius: 999px;
+  padding: 13px 15px;
+  font-weight: 800;
+}
+.nav-item.active, .nav-item:hover {
+  background: linear-gradient(135deg, rgba(246,162,26,.22), rgba(247,232,194,.06));
+  color: var(--label-cream);
+  border-color: rgba(246,162,26,.42);
+}
+
+.store-card {
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+  padding: 18px;
+  text-decoration: none;
+  border-radius: 22px;
+  border: 1px solid rgba(246,162,26,.36);
+  background:
+    linear-gradient(145deg, rgba(246,162,26,.17), rgba(8,7,5,.92)),
+    #0d0b08;
+  color: var(--label-cream);
+}
+.store-card span { color: var(--accent); font-weight: 900; text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; }
+.store-card strong { font-size: .95rem; }
+
+.content { max-width: 1260px; }
+.mobile-topbar { display: none; }
+
+.hero-panel {
+  display: grid;
+  grid-template-columns: 1.5fr .8fr;
+  gap: 22px;
+  align-items: stretch;
+  margin-bottom: 24px;
+  padding: clamp(22px, 4vw, 42px);
+  border: 1px solid rgba(247,232,194,.2);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(246,162,26,.2), transparent 26%),
+    linear-gradient(135deg, rgba(247,232,194,.08), rgba(246,162,26,.06) 38%, rgba(8,7,5,.76)),
+    #0c0a07;
+  box-shadow: 0 26px 75px rgba(0,0,0,.36);
+}
+.hero-kicker, .page-header span {
+  color: var(--accent);
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: .78rem;
+}
+.hero-panel h1 {
+  margin: 10px 0;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: .92;
+  letter-spacing: -.05em;
+  text-transform: uppercase;
+}
+.hero-panel p { color: var(--muted); font-size: 1.1rem; max-width: 680px; }
+.hero-bottle-card {
+  position: relative;
+  display: grid;
+  align-content: end;
+  min-height: 260px;
+  border-radius: 28px;
+  padding: 22px;
+  color: #160b04;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, transparent 0 27%, rgba(0,0,0,.16) 27% 31%, transparent 31% 69%, rgba(0,0,0,.16) 69% 73%, transparent 73%),
+    linear-gradient(180deg, #111 0 18%, #f8e3a8 18% 72%, #c78620 72% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.2), 0 18px 50px rgba(0,0,0,.25);
+}
+.hero-bottle-card::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 86px;
+  height: 46px;
+  transform: translateX(-50%);
+  border-radius: 12px 12px 5px 5px;
+  background: #050403;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.12);
+}
+.hero-bottle-card span { text-transform: uppercase; font-weight: 950; letter-spacing: .14em; font-size: .75rem; }
+.hero-bottle-card strong { font-size: 2rem; line-height: 1; text-transform: uppercase; }
+.hero-bottle-card small { font-weight: 800; color: #3d2009; }
+
+.stat-card, .recipe-card, .planner-card, .seasoning-card, .panel-section, .photo-card, .feedback-card, .grocery-row, .custom-recipe-row {
+  background: linear-gradient(180deg, rgba(29,23,16,.96), rgba(12,10,7,.98));
+  border-color: rgba(247,232,194,.18);
+  box-shadow: 0 22px 65px rgba(0,0,0,.30);
+}
+.stat-card strong { color: var(--label-cream); }
+.recipe-card.featured, .seasoning-card.selected {
+  border-color: rgba(246,162,26,.7);
+  background: linear-gradient(145deg, rgba(246,162,26,.16), rgba(12,10,7,.98));
+}
+
+.recipe-topline span, .chip, .quick-add, .recent-list span, .recent-list a {
+  background: rgba(247,232,194,.055);
+  border-color: rgba(247,232,194,.18);
+}
+
+.action-row button, .input-row button, .upload-button, .primary-wide {
+  background: linear-gradient(135deg, #ffd36e, #f6a21a 56%, #b45b12);
+  color: #140b04;
+  border: 1px solid rgba(255,224,163,.35);
+  box-shadow: 0 12px 28px rgba(246,162,26,.16);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.secondary-button, .favorite-button, .icon-button {
+  background: rgba(247,232,194,.055);
+  border-color: rgba(247,232,194,.18);
+}
+.input-row input, .search-box input, select, textarea, .recipe-form input, .recipe-form select, .recipe-form textarea, .feedback-form input, .feedback-form select, .feedback-form textarea {
+  background: rgba(7,6,4,.82);
+  border-color: rgba(247,232,194,.20);
+}
+
+.recipe-image-link { border-radius: 24px; border-color: rgba(247,232,194,.2); }
+.recipe-image-link::after {
+  content: "Watch Recipe";
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(7,6,4,.78);
+  border: 1px solid rgba(255,224,163,.38);
+  color: var(--label-cream);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: .75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.recipe-image-link { position: relative; }
+
+.page-header h1, .recipe-card h2, .panel-section h2, .mini-section h2 {
+  letter-spacing: -.03em;
+}
+
+@media (max-width: 850px) {
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid rgba(247,232,194,.16); }
+  .sidebar-promo, .store-card { display: none; }
+  .mobile-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: rgba(7,6,4,.65);
+    border: 1px solid rgba(247,232,194,.16);
+    color: var(--accent-2);
+  }
+  .hero-panel { grid-template-columns: 1fr; }
+  .hero-bottle-card { min-height: 190px; }
+}

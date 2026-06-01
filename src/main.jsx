@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
+  BadgePercent,
   Beef,
   CalendarDays,
   Camera,
@@ -169,13 +170,19 @@ function App() {
   return (
     <main className="app-shell">
       <aside className="sidebar">
+        <div className="promo-strip sidebar-promo"><BadgePercent size={15} /> Free shipping on $99+ orders</div>
         <div className="brand-card">
           <div className="brand-icon"><ChefHat size={26} /></div>
-          <div><h1>Carnivore Companion</h1><p>Meal Planner</p></div>
+          <div><h1>Carnivore Companion</h1><p>Seasoning-powered meal prep</p></div>
         </div>
         <nav>{tabs.map((tab) => { const Icon = tab.icon; return <button key={tab.id} className={activeTab === tab.id ? 'nav-item active' : 'nav-item'} onClick={() => setActiveTab(tab.id)}><Icon size={18} /> {tab.label}</button>; })}</nav>
+        <a className="store-card" href="https://www.carnivorecompanion.com/collections/all" target="_blank" rel="noreferrer">
+          <span>Shop the Seasonings</span>
+          <strong>Steak Dust · Taco Shake · Gator Bite</strong>
+        </a>
       </aside>
       <section className="content">
+        <div className="mobile-topbar"><strong>Carnivore Companion</strong><span>Meal Planner</span></div>
         {activeTab === 'dashboard' && <Dashboard matches={matches} inventoryItems={inventoryItems} kitchenPhotos={kitchenPhotos} favorites={favorites} shoppingItems={shoppingItems} setActiveTab={setActiveTab} onToggleFavorite={toggleFavorite} onOpenRecipe={openRecipe} />}
         {activeTab === 'inventory' && <Inventory items={inventoryItems} photos={kitchenPhotos} onChange={updateInventory} onPhotoChange={updatePhotos} />}
         {activeTab === 'seasonings' && <Seasonings owned={ownedSeasonings} onChange={updateSeasonings} />}
@@ -197,7 +204,7 @@ function Dashboard({ matches, inventoryItems, kitchenPhotos, favorites, shopping
   const lowItems = inventoryItems.filter((item) => item.low || Number(item.quantity) <= 1).slice(0, 5);
   const recentItems = [...inventoryItems].slice(-5).reverse();
   return <div>
-    <Header eyebrow="Today" title="What can you cook and what do you need?" subtitle="Pantry, snacks, household shopping, Carnivore Companion recipes, and meal prep in one place." />
+    <section className="hero-panel"><div><span className="hero-kicker">Carnivore Companion Planner</span><h1>Plan meals around what you own.</h1><p>Match your pantry, snacks, household needs, and Carnivore Companion seasonings to recipes and shopping lists.</p></div><div className="hero-bottle-card"><span>Featured lineup</span><strong>5 Simple Seasonings</strong><small>Steak Dust · Gator Bite · Smoke Stack · Spicy Ranch · Taco Shake</small></div></section>
     <div className="stats-grid">
       <Stat label="Inventory Items" value={inventoryItems.length} />
       <Stat label="Food Photos" value={kitchenPhotos.length} />

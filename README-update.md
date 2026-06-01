@@ -1,45 +1,31 @@
-# Carnivore Companion v1.4 + v1.5 Update
+# Carnivore Companion Visual Refresh
 
-Replace these files/folders in your project:
+Replace these files:
 
 - `src/main.jsx`
 - `src/styles.css`
-- `src/lib/storage.js`
-- `src/lib/matcher.js`
 
-This update adds:
+This update keeps all v1.4/v1.5 features but changes the visual direction so the app feels closer to the Carnivore Companion storefront and seasoning bottle identity:
 
-## v1.4 Pantry & Inventory
-- Renames My Kitchen to Pantry & Inventory
-- Single inventory source for carnivore foods, general foods, snacks, household supplies, produce, pantry items, and seasonings
-- Snacks category with quick-add items like Little Debbie Cakes, chips, peanuts, Oreos
-- Household category
-- Quantity tracking
-- Low inventory checkbox
-- Shopping Lists page can add items from existing inventory so users do not enter the same item twice
-- Move shopping item to inventory
+- black / cream / gold storefront-style palette
+- free-shipping promo strip
+- seasoning bottle-inspired dashboard hero card
+- stronger product-style cards and buttons
+- sidebar shop CTA
+- mobile topbar polish
 
-## v1.5 Recipe Detail Pages
-- Open Recipe button
-- Full recipe detail view
-- Large image
-- Ingredients with have/missing status
-- Steps
-- Favorite button
-- Add to meal plan
-- Watch video button
-- Buy seasoning button
+No backend changes are required.
 
-After replacing files:
+Run:
 
 ```powershell
 npm run dev
 ```
 
-If good:
+Then commit:
 
 ```powershell
 git add .
-git commit -m "Add pantry inventory and recipe detail pages"
+git commit -m "Refresh Carnivore Companion visual design"
 git push
 ```
