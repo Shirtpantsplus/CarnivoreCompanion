@@ -1,6 +1,6 @@
-# Carnivore Companion v1.3 General Grocery + Custom Recipes + Feedback Update
+# Carnivore Companion v1.4 + v1.5 Update
 
-Replace these files in your project:
+Replace these files/folders in your project:
 
 - `src/main.jsx`
 - `src/styles.css`
@@ -9,12 +9,26 @@ Replace these files in your project:
 
 This update adds:
 
-- General Grocery page for non-Carnivore Companion meals and regular grocery runs
-- Create Your Own Recipes page
-- User-created recipes saved in localStorage
-- Custom recipes included in recipe search/matching
-- Feedback page for ideas, bugs, recipe requests, and seasoning requests
-- Local feedback storage until a backend/form service is added
+## v1.4 Pantry & Inventory
+- Renames My Kitchen to Pantry & Inventory
+- Single inventory source for carnivore foods, general foods, snacks, household supplies, produce, pantry items, and seasonings
+- Snacks category with quick-add items like Little Debbie Cakes, chips, peanuts, Oreos
+- Household category
+- Quantity tracking
+- Low inventory checkbox
+- Shopping Lists page can add items from existing inventory so users do not enter the same item twice
+- Move shopping item to inventory
+
+## v1.5 Recipe Detail Pages
+- Open Recipe button
+- Full recipe detail view
+- Large image
+- Ingredients with have/missing status
+- Steps
+- Favorite button
+- Add to meal plan
+- Watch video button
+- Buy seasoning button
 
 After replacing files:
 
@@ -22,10 +36,10 @@ After replacing files:
 npm run dev
 ```
 
-If it works:
+If good:
 
 ```powershell
 git add .
-git commit -m "Add general grocery custom recipes and feedback"
+git commit -m "Add pantry inventory and recipe detail pages"
 git push
 ```

@@ -22,17 +22,41 @@ export function saveJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+export function normalizeInventoryItem(item) {
+  if (typeof item === 'string') {
+    return {
+      id: `inv-${item}-${Date.now()}`,
+      name: item,
+      category: 'Protein',
+      quantity: 1,
+      unit: '',
+      low: false,
+      addedAt: new Date().toISOString()
+    };
+  }
+
+  return {
+    id: item.id || `inv-${item.name || 'item'}-${Date.now()}`,
+    name: item.name || '',
+    category: item.category || 'Pantry',
+    quantity: item.quantity ?? 1,
+    unit: item.unit || '',
+    low: Boolean(item.low),
+    addedAt: item.addedAt || new Date().toISOString()
+  };
+}
+
 export function getKitchenItems() {
   return loadJson(KEYS.kitchen, [
-    { name: 'ground beef', addedAt: new Date().toISOString() },
-    { name: 'eggs', addedAt: new Date().toISOString() },
-    { name: 'butter', addedAt: new Date().toISOString() },
-    { name: 'cheese', addedAt: new Date().toISOString() }
-  ]);
+    { id: 'seed-ground-beef', name: 'ground beef', category: 'Protein', quantity: 1, unit: 'pack', low: false, addedAt: new Date().toISOString() },
+    { id: 'seed-eggs', name: 'eggs', category: 'Dairy & Eggs', quantity: 12, unit: 'count', low: false, addedAt: new Date().toISOString() },
+    { id: 'seed-butter', name: 'butter', category: 'Dairy & Eggs', quantity: 1, unit: 'pack', low: false, addedAt: new Date().toISOString() },
+    { id: 'seed-cheese', name: 'cheese', category: 'Dairy & Eggs', quantity: 1, unit: 'pack', low: false, addedAt: new Date().toISOString() }
+  ]).map(normalizeInventoryItem);
 }
 
 export function saveKitchenItems(items) {
-  saveJson(KEYS.kitchen, items);
+  saveJson(KEYS.kitchen, items.map(normalizeInventoryItem));
 }
 
 export function getKitchenPhotos() {
