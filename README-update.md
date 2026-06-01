@@ -1,28 +1,31 @@
-# Carnivore Companion Meal Planner v1.2 Update
+# Carnivore Companion v1.3 General Grocery + Custom Recipes + Feedback Update
 
 Replace these files in your project:
 
-- src/main.jsx
-- src/styles.css
-- src/data/recipes.js
-- src/lib/matcher.js
-- src/lib/storage.js
+- `src/main.jsx`
+- `src/styles.css`
+- `src/lib/storage.js`
+- `src/lib/matcher.js`
 
-New in this update:
-- Expanded recipe database to 40 recipes
-- Recipe filters by category, difficulty, strictness, and seasoning
-- Recently added foods on dashboard
-- Missing seasoning opportunities on dashboard
-- Inventory added dates / age badges
-- Improved matching with optional ingredient boost
+This update adds:
 
-After replacing:
+- General Grocery page for non-Carnivore Companion meals and regular grocery runs
+- Create Your Own Recipes page
+- User-created recipes saved in localStorage
+- Custom recipes included in recipe search/matching
+- Feedback page for ideas, bugs, recipe requests, and seasoning requests
+- Local feedback storage until a backend/form service is added
+
+After replacing files:
+
+```powershell
 npm run dev
+```
 
-Then test:
-- Dashboard
-- My Kitchen quick add/manual add/photo log
-- Recipe filters
-- Favorites
-- Meal Prep
-- Grocery List
+If it works:
+
+```powershell
+git add .
+git commit -m "Add general grocery custom recipes and feedback"
+git push
+```

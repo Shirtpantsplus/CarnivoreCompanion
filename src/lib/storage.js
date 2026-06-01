@@ -3,7 +3,10 @@ const KEYS = {
   photos: 'ccmp:kitchen-photos',
   seasonings: 'ccmp:owned-seasonings',
   mealPlan: 'ccmp:meal-plan',
-  favorites: 'ccmp:favorites'
+  favorites: 'ccmp:favorites',
+  customRecipes: 'ccmp:custom-recipes',
+  generalGrocery: 'ccmp:general-grocery',
+  feedback: 'ccmp:feedback'
 };
 
 export function loadJson(key, fallback) {
@@ -62,4 +65,28 @@ export function getFavorites() {
 
 export function saveFavorites(favorites) {
   saveJson(KEYS.favorites, favorites);
+}
+
+export function getCustomRecipes() {
+  return loadJson(KEYS.customRecipes, []);
+}
+
+export function saveCustomRecipes(recipes) {
+  saveJson(KEYS.customRecipes, recipes);
+}
+
+export function getGeneralGroceryItems() {
+  return loadJson(KEYS.generalGrocery, []);
+}
+
+export function saveGeneralGroceryItems(items) {
+  saveJson(KEYS.generalGrocery, items);
+}
+
+export function getFeedbackEntries() {
+  return loadJson(KEYS.feedback, []);
+}
+
+export function saveFeedbackEntries(entries) {
+  saveJson(KEYS.feedback, entries);
 }

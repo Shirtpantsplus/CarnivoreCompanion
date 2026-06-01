@@ -5,11 +5,14 @@ import {
   CalendarDays,
   Camera,
   ChefHat,
+  ClipboardList,
+  FilePlus2,
   Filter,
   Heart,
   Home,
   ImagePlus,
   ListPlus,
+  MessageSquare,
   Search,
   ShoppingCart,
   Soup,
@@ -28,7 +31,13 @@ import {
   saveKitchenItems,
   saveKitchenPhotos,
   saveMealPlan,
-  saveOwnedSeasonings
+  saveOwnedSeasonings,
+  getCustomRecipes,
+  saveCustomRecipes,
+  getGeneralGroceryItems,
+  saveGeneralGroceryItems,
+  getFeedbackEntries,
+  saveFeedbackEntries
 } from './lib/storage';
 import { buildGroceryList, matchRecipes } from './lib/matcher';
 import './styles.css';
@@ -39,7 +48,10 @@ const tabs = [
   { id: 'seasonings', label: 'Seasonings', icon: Soup },
   { id: 'recipes', label: 'Recipes', icon: ChefHat },
   { id: 'mealprep', label: 'Meal Prep', icon: CalendarDays },
-  { id: 'grocery', label: 'Grocery List', icon: ShoppingCart }
+  { id: 'grocery', label: 'Meal Grocery', icon: ShoppingCart },
+  { id: 'general-grocery', label: 'General Grocery', icon: ClipboardList },
+  { id: 'custom-recipes', label: 'My Recipes', icon: FilePlus2 },
+  { id: 'feedback', label: 'Feedback', icon: MessageSquare }
 ];
 
 const mealSlots = ['Monday Dinner', 'Tuesday Dinner', 'Wednesday Dinner', 'Thursday Dinner', 'Friday Dinner', 'Saturday Dinner', 'Sunday Dinner'];
@@ -82,19 +94,23 @@ function App() {
   const [ownedSeasonings, setOwnedSeasonings] = useState(getOwnedSeasonings);
   const [mealPlan, setMealPlan] = useState(getMealPlan);
   const [favorites, setFavorites] = useState(getFavorites);
+  const [customRecipes, setCustomRecipes] = useState(getCustomRecipes);
+  const [generalGroceryItems, setGeneralGroceryItems] = useState(getGeneralGroceryItems);
+  const [feedbackEntries, setFeedbackEntries] = useState(getFeedbackEntries);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState({ category: 'All', difficulty: 'All', strictness: 'All', seasoningId: 'All' });
 
   const kitchenNames = useMemo(() => kitchenItems.map(getItemName), [kitchenItems]);
+  const allRecipes = useMemo(() => [...RECIPES, ...customRecipes], [customRecipes]);
   const seasoningMap = useMemo(() => Object.fromEntries(SEASONINGS.map((s) => [s.id, s])), []);
   const matches = useMemo(() => {
-    return matchRecipes(RECIPES, kitchenNames, ownedSeasonings).map((recipe) => ({
+    return matchRecipes(allRecipes, kitchenNames, ownedSeasonings).map((recipe) => ({
       ...recipe,
-      seasoningName: seasoningMap[recipe.seasoningId]?.name || 'Unknown seasoning',
-      seasoningUrl: seasoningMap[recipe.seasoningId]?.productUrl || 'https://www.carnivorecompanion.com/collections/all',
+      seasoningName: recipe.seasoningId ? (seasoningMap[recipe.seasoningId]?.name || 'Unknown seasoning') : 'No Carnivore Companion seasoning',
+      seasoningUrl: recipe.seasoningId ? (seasoningMap[recipe.seasoningId]?.productUrl || 'https://www.carnivorecompanion.com/collections/all') : '',
       isFavorite: favorites.includes(recipe.id)
     }));
-  }, [kitchenNames, ownedSeasonings, seasoningMap, favorites]);
+  }, [allRecipes, kitchenNames, ownedSeasonings, seasoningMap, favorites]);
 
   const filteredRecipes = matches.filter((recipe) => {
     const haystack = [
@@ -143,6 +159,21 @@ function App() {
     saveFavorites(next);
   }
 
+  function updateCustomRecipes(recipes) {
+    setCustomRecipes(recipes);
+    saveCustomRecipes(recipes);
+  }
+
+  function updateGeneralGrocery(items) {
+    setGeneralGroceryItems(items);
+    saveGeneralGroceryItems(items);
+  }
+
+  function updateFeedback(entries) {
+    setFeedbackEntries(entries);
+    saveFeedbackEntries(entries);
+  }
+
   return (
     <main className="app-shell">
       <aside className="sidebar">
@@ -166,18 +197,21 @@ function App() {
       </aside>
 
       <section className="content">
-        {activeTab === 'dashboard' && <Dashboard matches={matches} kitchenItems={kitchenItems} kitchenPhotos={kitchenPhotos} ownedSeasonings={ownedSeasonings} favorites={favorites} setActiveTab={setActiveTab} onToggleFavorite={toggleFavorite} />}
+        {activeTab === 'dashboard' && <Dashboard matches={matches} kitchenItems={kitchenItems} kitchenPhotos={kitchenPhotos} ownedSeasonings={ownedSeasonings} favorites={favorites} customRecipes={customRecipes} generalGroceryItems={generalGroceryItems} feedbackEntries={feedbackEntries} setActiveTab={setActiveTab} onToggleFavorite={toggleFavorite} />}
         {activeTab === 'kitchen' && <Kitchen items={kitchenItems} photos={kitchenPhotos} onChange={updateKitchen} onPhotoChange={updateKitchenPhotos} />}
         {activeTab === 'seasonings' && <Seasonings owned={ownedSeasonings} onChange={updateSeasonings} />}
-        {activeTab === 'recipes' && <Recipes recipes={filteredRecipes} query={query} setQuery={setQuery} filters={filters} setFilters={setFilters} onToggleFavorite={toggleFavorite} />}
+        {activeTab === 'recipes' && <Recipes recipes={filteredRecipes} allRecipes={allRecipes} query={query} setQuery={setQuery} filters={filters} setFilters={setFilters} onToggleFavorite={toggleFavorite} />}
         {activeTab === 'mealprep' && <MealPrep matches={matches} mealPlan={mealPlan} onChange={updateMealPlan} />}
         {activeTab === 'grocery' && <GroceryList mealPlan={mealPlan} />}
+        {activeTab === 'general-grocery' && <GeneralGrocery items={generalGroceryItems} onChange={updateGeneralGrocery} />}
+        {activeTab === 'custom-recipes' && <CustomRecipes recipes={customRecipes} onChange={updateCustomRecipes} />}
+        {activeTab === 'feedback' && <Feedback entries={feedbackEntries} onChange={updateFeedback} />}
       </section>
     </main>
   );
 }
 
-function Dashboard({ matches, kitchenItems, kitchenPhotos, ownedSeasonings, favorites, setActiveTab, onToggleFavorite }) {
+function Dashboard({ matches, kitchenItems, kitchenPhotos, ownedSeasonings, favorites, customRecipes, generalGroceryItems, feedbackEntries, setActiveTab, onToggleFavorite }) {
   const top = matches[0];
   const favoriteRecipes = matches.filter((recipe) => favorites.includes(recipe.id)).slice(0, 3);
   const recentItems = kitchenItems.slice(-5).reverse();
@@ -192,7 +226,10 @@ function Dashboard({ matches, kitchenItems, kitchenPhotos, ownedSeasonings, favo
         <Stat label="Seasonings Owned" value={ownedSeasonings.length} />
         <Stat label="Best Match" value={top ? `${top.score}%` : '0%'} />
         <Stat label="Favorite Recipes" value={favorites.length} />
-        <Stat label="Recipe Library" value={RECIPES.length} />
+        <Stat label="Recipe Library" value={RECIPES.length + customRecipes.length} />
+        <Stat label="Custom Recipes" value={customRecipes.length} />
+        <Stat label="Grocery Items" value={generalGroceryItems.filter((item) => !item.checked).length} />
+        <Stat label="Feedback Notes" value={feedbackEntries.length} />
       </div>
 
       {top && <RecipeCard recipe={top} featured onToggleFavorite={onToggleFavorite} />}
@@ -229,6 +266,8 @@ function Dashboard({ matches, kitchenItems, kitchenPhotos, ownedSeasonings, favo
       <div className="action-row">
         <button onClick={() => setActiveTab('kitchen')}>Update My Kitchen</button>
         <button onClick={() => setActiveTab('recipes')}>See Recipe Matches</button>
+        <button onClick={() => setActiveTab('custom-recipes')}>Create Recipe</button>
+        <button onClick={() => setActiveTab('general-grocery')}>General Grocery</button>
       </div>
     </div>
   );
@@ -379,10 +418,10 @@ function Seasonings({ owned, onChange }) {
   );
 }
 
-function Recipes({ recipes, query, setQuery, filters, setFilters, onToggleFavorite }) {
-  const categories = uniqueOptions(RECIPES.map((recipe) => recipe.category));
-  const difficulties = uniqueOptions(RECIPES.map((recipe) => recipe.difficulty));
-  const strictnesses = uniqueOptions(RECIPES.map((recipe) => recipe.strictness));
+function Recipes({ recipes, allRecipes, query, setQuery, filters, setFilters, onToggleFavorite }) {
+  const categories = uniqueOptions(allRecipes.map((recipe) => recipe.category));
+  const difficulties = uniqueOptions(allRecipes.map((recipe) => recipe.difficulty));
+  const strictnesses = uniqueOptions(allRecipes.map((recipe) => recipe.strictness));
 
   return (
     <div>
@@ -446,6 +485,254 @@ function GroceryList({ mealPlan }) {
   );
 }
 
+
+function GeneralGrocery({ items, onChange }) {
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('General');
+  const [note, setNote] = useState('');
+  const activeItems = items.filter((item) => !item.checked);
+  const completedItems = items.filter((item) => item.checked);
+
+  function addItem() {
+    const cleanName = name.trim();
+    if (!cleanName) return;
+    const nextItem = {
+      id: globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${cleanName}`,
+      name: cleanName,
+      category,
+      note: note.trim(),
+      checked: false,
+      addedAt: new Date().toISOString()
+    };
+    onChange([nextItem, ...items]);
+    setName('');
+    setNote('');
+  }
+
+  function toggleItem(id) {
+    onChange(items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item));
+  }
+
+  function removeItem(id) {
+    onChange(items.filter((item) => item.id !== id));
+  }
+
+  function clearCompleted() {
+    onChange(items.filter((item) => !item.checked));
+  }
+
+  return (
+    <div>
+      <Header eyebrow="General Grocery" title="Any Meal Grocery List" subtitle="Use this for non-Carnivore Companion meals, household staples, cookout items, or regular grocery runs." />
+      <section className="panel-section">
+        <h2><ClipboardList size={18} /> Add Grocery Item</h2>
+        <div className="input-row grocery-input-row">
+          <input value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addItem()} placeholder="milk, buns, paper plates, vegetables, snacks..." />
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option>General</option>
+            <option>Meat</option>
+            <option>Dairy</option>
+            <option>Produce</option>
+            <option>Pantry</option>
+            <option>Household</option>
+            <option>Other</option>
+          </select>
+          <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional note" />
+          <button onClick={addItem}><ListPlus size={18} /> Add</button>
+        </div>
+      </section>
+
+      <section className="panel-section">
+        <h2>Shopping List</h2>
+        {activeItems.length === 0 ? <p className="empty">No active grocery items yet.</p> : (
+          <div className="general-grocery-list">
+            {activeItems.map((item) => <GroceryRow key={item.id} item={item} onToggle={toggleItem} onRemove={removeItem} />)}
+          </div>
+        )}
+      </section>
+
+      {completedItems.length > 0 && (
+        <section className="panel-section">
+          <div className="section-title-row">
+            <h2>Completed</h2>
+            <button className="secondary-button" onClick={clearCompleted}>Clear Completed</button>
+          </div>
+          <div className="general-grocery-list completed">
+            {completedItems.map((item) => <GroceryRow key={item.id} item={item} onToggle={toggleItem} onRemove={removeItem} />)}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function GroceryRow({ item, onToggle, onRemove }) {
+  return (
+    <article className={item.checked ? 'grocery-row checked' : 'grocery-row'}>
+      <button className="favorite-button" onClick={() => onToggle(item.id)} aria-label={`Toggle ${item.name}`}>{item.checked ? '✓' : ''}</button>
+      <div>
+        <strong>{item.name}</strong>
+        <span>{item.category}{item.note ? ` • ${item.note}` : ''}</span>
+      </div>
+      <button className="icon-button danger" onClick={() => onRemove(item.id)} aria-label={`Remove ${item.name}`}><Trash2 size={16} /></button>
+    </article>
+  );
+}
+
+function CustomRecipes({ recipes, onChange }) {
+  const emptyForm = { title: '', category: 'Custom', protein: '', difficulty: 'Easy', strictness: 'regular', prepTime: '20', ingredients: '', optional: '', steps: '', videoUrl: '', image: '' };
+  const [form, setForm] = useState(emptyForm);
+
+  function updateField(field, value) {
+    setForm({ ...form, [field]: value });
+  }
+
+  function saveRecipe() {
+    const title = form.title.trim();
+    const ingredients = splitList(form.ingredients);
+    const steps = splitSteps(form.steps);
+    if (!title || ingredients.length === 0 || steps.length === 0) return;
+
+    const nextRecipe = {
+      id: `custom-${Date.now()}`,
+      title,
+      category: form.category.trim() || 'Custom',
+      protein: form.protein.trim() || 'Mixed',
+      difficulty: form.difficulty,
+      seasoningId: '',
+      prepTime: Number(form.prepTime) || 20,
+      strictness: form.strictness,
+      ingredients,
+      optional: splitList(form.optional),
+      steps,
+      videoUrl: form.videoUrl.trim() || '#',
+      image: form.image.trim(),
+      imageSource: 'User provided',
+      isCustom: true
+    };
+    onChange([nextRecipe, ...recipes]);
+    setForm(emptyForm);
+  }
+
+  function deleteRecipe(id) {
+    onChange(recipes.filter((recipe) => recipe.id !== id));
+  }
+
+  return (
+    <div>
+      <Header eyebrow="My Recipes" title="Create Your Own Recipes" subtitle="Add non-Carnivore Companion dishes or family meals so they can show up in the recipe matcher." />
+      <section className="panel-section recipe-form">
+        <h2><FilePlus2 size={18} /> New Recipe</h2>
+        <div className="form-grid">
+          <input value={form.title} onChange={(e) => updateField('title', e.target.value)} placeholder="Recipe name" />
+          <input value={form.protein} onChange={(e) => updateField('protein', e.target.value)} placeholder="Main protein or main ingredient" />
+          <input value={form.category} onChange={(e) => updateField('category', e.target.value)} placeholder="Category" />
+          <select value={form.difficulty} onChange={(e) => updateField('difficulty', e.target.value)}>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Advanced</option>
+          </select>
+          <select value={form.strictness} onChange={(e) => updateField('strictness', e.target.value)}>
+            <option>regular</option>
+            <option>carnivore-ish</option>
+            <option>strict carnivore</option>
+            <option>keto</option>
+            <option>family meal</option>
+          </select>
+          <input type="number" value={form.prepTime} onChange={(e) => updateField('prepTime', e.target.value)} placeholder="Prep minutes" />
+        </div>
+        <textarea value={form.ingredients} onChange={(e) => updateField('ingredients', e.target.value)} placeholder="Required ingredients, separated by commas" />
+        <textarea value={form.optional} onChange={(e) => updateField('optional', e.target.value)} placeholder="Optional ingredients, separated by commas" />
+        <textarea value={form.steps} onChange={(e) => updateField('steps', e.target.value)} placeholder="Cooking steps. Use one line per step." />
+        <div className="form-grid two">
+          <input value={form.image} onChange={(e) => updateField('image', e.target.value)} placeholder="Optional image URL" />
+          <input value={form.videoUrl} onChange={(e) => updateField('videoUrl', e.target.value)} placeholder="Optional video/source URL" />
+        </div>
+        <button className="primary-wide" onClick={saveRecipe}>Save Recipe</button>
+      </section>
+
+      <section className="panel-section">
+        <h2>Saved Custom Recipes</h2>
+        {recipes.length === 0 ? <p className="empty">No custom recipes yet.</p> : (
+          <div className="custom-recipe-list">
+            {recipes.map((recipe) => (
+              <article className="custom-recipe-row" key={recipe.id}>
+                <div>
+                  <strong>{recipe.title}</strong>
+                  <span>{recipe.category} • {recipe.prepTime} min • {recipe.ingredients.length} ingredient(s)</span>
+                </div>
+                <button className="icon-button danger" onClick={() => deleteRecipe(recipe.id)} aria-label={`Delete ${recipe.title}`}><Trash2 size={16} /></button>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function Feedback({ entries, onChange }) {
+  const [form, setForm] = useState({ type: 'Idea', message: '', email: '' });
+
+  function submitFeedback() {
+    const message = form.message.trim();
+    if (!message) return;
+    const nextEntry = {
+      id: globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-feedback`,
+      ...form,
+      message,
+      createdAt: new Date().toISOString(),
+      status: 'local'
+    };
+    onChange([nextEntry, ...entries]);
+    setForm({ type: 'Idea', message: '', email: '' });
+  }
+
+  function removeFeedback(id) {
+    onChange(entries.filter((entry) => entry.id !== id));
+  }
+
+  return (
+    <div>
+      <Header eyebrow="Feedback" title="Submit Feedback" subtitle="Collect app ideas, bugs, recipe requests, and user notes. This version saves feedback locally until a backend/form service is added." />
+      <section className="panel-section feedback-form">
+        <h2><MessageSquare size={18} /> New Feedback</h2>
+        <div className="form-grid two">
+          <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
+            <option>Idea</option>
+            <option>Bug</option>
+            <option>Recipe Request</option>
+            <option>Seasoning Request</option>
+            <option>Other</option>
+          </select>
+          <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="Optional email" />
+        </div>
+        <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Tell us what should be added, fixed, or improved..." />
+        <button className="primary-wide" onClick={submitFeedback}>Save Feedback</button>
+        <p className="section-note">Next upgrade: connect this page to Formspree, Firebase, Supabase, or a Vercel serverless endpoint so feedback can be emailed/stored centrally.</p>
+      </section>
+
+      <section className="panel-section">
+        <h2>Saved Feedback</h2>
+        {entries.length === 0 ? <p className="empty">No feedback submitted yet.</p> : (
+          <div className="feedback-list">
+            {entries.map((entry) => (
+              <article className="feedback-card" key={entry.id}>
+                <div>
+                  <strong>{entry.type}</strong>
+                  <span>{new Date(entry.createdAt).toLocaleString()}{entry.email ? ` • ${entry.email}` : ''}</span>
+                  <p>{entry.message}</p>
+                </div>
+                <button className="icon-button danger" onClick={() => removeFeedback(entry.id)} aria-label="Delete feedback"><Trash2 size={16} /></button>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
 function RecipeCard({ recipe, featured = false, compact = false, onToggleFavorite }) {
   return (
     <article className={featured ? 'recipe-card featured' : compact ? 'recipe-card compact' : 'recipe-card'}>
@@ -468,8 +755,8 @@ function RecipeCard({ recipe, featured = false, compact = false, onToggleFavorit
         </a>
       )}
       {recipe.protein && <p><strong>Main protein:</strong> {recipe.protein}</p>}
-      <p><strong>Seasoning:</strong> {recipe.seasoningName} {recipe.hasSeasoning ? '✅' : '🛒'}</p>
-      {!recipe.hasSeasoning && <a className="buy-link" href={recipe.seasoningUrl} target="_blank" rel="noreferrer">Buy {recipe.seasoningName}</a>}
+      <p><strong>Seasoning:</strong> {recipe.seasoningName} {recipe.requiresSeasoning ? (recipe.hasSeasoning ? '✅' : '🛒') : '🍽️'}</p>
+      {recipe.requiresSeasoning && !recipe.hasSeasoning && <a className="buy-link" href={recipe.seasoningUrl} target="_blank" rel="noreferrer">Buy {recipe.seasoningName}</a>}
       <p><strong>Have:</strong> {recipe.matched.join(', ') || 'none yet'}</p>
       {recipe.optionalMatched?.length > 0 && <p><strong>Optional have:</strong> {recipe.optionalMatched.join(', ')}</p>}
       <p><strong>Missing:</strong> {recipe.missing.join(', ') || 'nothing'}</p>
@@ -494,6 +781,14 @@ function Stat({ label, value }) {
 
 function uniqueOptions(values) {
   return [...new Set(values.filter(Boolean))].sort();
+}
+
+function splitList(value) {
+  return value.split(',').map((item) => item.trim().toLowerCase()).filter(Boolean);
+}
+
+function splitSteps(value) {
+  return value.split(/\n|\|/).map((item) => item.trim()).filter(Boolean);
 }
 
 function daysSince(dateValue) {

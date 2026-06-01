@@ -7,17 +7,19 @@ export function matchRecipes(recipes, kitchenItems, ownedSeasoningIds) {
 
   return recipes
     .map((recipe) => {
-      const required = recipe.ingredients.map(normalize);
+      const required = (recipe.ingredients || []).map(normalize);
       const optional = (recipe.optional || []).map(normalize);
-      const matched = recipe.ingredients.filter((item) => pantry.has(normalize(item)));
+      const matched = (recipe.ingredients || []).filter((item) => pantry.has(normalize(item)));
       const optionalMatched = (recipe.optional || []).filter((item) => pantry.has(normalize(item)));
-      const missing = recipe.ingredients.filter((item) => !pantry.has(normalize(item)));
-      const hasSeasoning = ownedSeasoningIds.includes(recipe.seasoningId);
+      const missing = (recipe.ingredients || []).filter((item) => !pantry.has(normalize(item)));
+      const requiresSeasoning = Boolean(recipe.seasoningId);
+      const hasSeasoning = !requiresSeasoning || ownedSeasoningIds.includes(recipe.seasoningId);
       const ingredientScore = required.length ? matched.length / required.length : 0;
       const optionalBoost = optional.length ? Math.min(optionalMatched.length / optional.length, 1) * 5 : 0;
-      const score = Math.min(100, Math.round((ingredientScore * 75) + (hasSeasoning ? 20 : 0) + optionalBoost));
+      const seasoningScore = requiresSeasoning ? (hasSeasoning ? 20 : 0) : 10;
+      const score = Math.min(100, Math.round((ingredientScore * 75) + seasoningScore + optionalBoost));
 
-      return { ...recipe, matched, optionalMatched, missing, hasSeasoning, score };
+      return { ...recipe, matched, optionalMatched, missing, hasSeasoning, requiresSeasoning, score };
     })
     .sort((a, b) => b.score - a.score || a.prepTime - b.prepTime);
 }
@@ -26,7 +28,7 @@ export function buildGroceryList(mealPlan) {
   const missing = new Set();
   Object.values(mealPlan).forEach((recipe) => {
     recipe?.missing?.forEach((item) => missing.add(item));
-    if (recipe && !recipe.hasSeasoning) missing.add('Needed seasoning: ' + recipe.seasoningName);
+    if (recipe?.requiresSeasoning && !recipe.hasSeasoning) missing.add('Needed seasoning: ' + recipe.seasoningName);
   });
   return Array.from(missing).sort();
 }
