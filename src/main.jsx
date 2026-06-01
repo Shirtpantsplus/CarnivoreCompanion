@@ -273,7 +273,70 @@ function Inventory({ items, photos, onChange, onPhotoChange }) {
   </div>;
 }
 
-function Seasonings({ owned, onChange }) { return <div><Header eyebrow="Cabinet" title="Seasoning Cabinet" subtitle="Select the Carnivore Companion seasonings you own." /><div className="card-grid">{SEASONINGS.map((seasoning) => <button key={seasoning.id} className={owned.includes(seasoning.id) ? 'seasoning-card selected' : 'seasoning-card'} onClick={() => onChange(owned.includes(seasoning.id) ? owned.filter((id) => id !== seasoning.id) : [...owned, seasoning.id])}><h3>{seasoning.name}</h3><p>{seasoning.profile}</p><small>Best with: {seasoning.bestWith.join(', ')}</small></button>)}</div></div>; }
+function Seasonings({ owned, onChange }) {
+  function toggle(id) {
+    onChange(owned.includes(id) ? owned.filter((x) => x !== id) : [...owned, id]);
+  }
+
+  const missingSeasonings = SEASONINGS.filter((seasoning) => !owned.includes(seasoning.id));
+
+  return (
+    <div>
+      <Header
+        eyebrow="Product Shelf"
+        title="Seasoning Cabinet"
+        subtitle="Add bottles you already own, or order the ones you still need from Carnivore Companion."
+      />
+
+      <section className="panel-section seasoning-summary-panel">
+        <div>
+          <h2>My Cabinet</h2>
+          <p className="section-note">
+            {owned.length} of {SEASONINGS.length} seasonings marked as owned. Add bottles bought online, found in a store, or received as a gift.
+          </p>
+        </div>
+        <a className="button-link" href="https://www.carnivorecompanion.com/products/everything-bundle-seasoning" target="_blank" rel="noreferrer">
+          <ShoppingCart size={18} /> Order Everything Bundle
+        </a>
+      </section>
+
+      {missingSeasonings.length > 0 && (
+        <section className="panel-section missing-seasoning-strip">
+          <h2>Still Missing</h2>
+          <p>{missingSeasonings.map((seasoning) => seasoning.name).join(', ')}</p>
+        </section>
+      )}
+
+      <div className="card-grid seasoning-product-grid">
+        {SEASONINGS.map((seasoning) => {
+          const isOwned = owned.includes(seasoning.id);
+          return (
+            <article key={seasoning.id} className={isOwned ? 'seasoning-card selected seasoning-product-card' : 'seasoning-card seasoning-product-card'}>
+              <div className="seasoning-card-topline">
+                <span>{seasoning.bottleSize || 'Bottle'}</span>
+                {seasoning.price && <span>{seasoning.price}</span>}
+              </div>
+              <h3>{seasoning.name}</h3>
+              <p>{seasoning.profile}</p>
+              <small>Best with: {seasoning.bestWith.join(', ')}</small>
+              <div className={isOwned ? 'cabinet-status owned' : 'cabinet-status'}>
+                {isOwned ? '✓ In My Cabinet' : 'Not in Cabinet'}
+              </div>
+              <div className="seasoning-actions">
+                <button onClick={() => toggle(seasoning.id)}>
+                  {isOwned ? 'Remove' : 'Add to My Cabinet'}
+                </button>
+                <a className="button-link secondary-order-link" href={seasoning.productUrl || 'https://www.carnivorecompanion.com/collections/all'} target="_blank" rel="noreferrer">
+                  <ExternalLink size={16} /> {isOwned ? 'Order More' : 'Order Now'}
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function Recipes({ recipes, allRecipes, query, setQuery, filters, setFilters, onToggleFavorite, onOpenRecipe }) {
   const categoryOptions = ['All', ...Array.from(new Set(allRecipes.map((r) => r.category).filter(Boolean))).sort()];

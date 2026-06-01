@@ -545,3 +545,98 @@ body::before {
   .hero-panel { grid-template-columns: 1fr; }
   .hero-bottle-card { min-height: 190px; }
 }
+
+
+/* Seasoning product shelf */
+.seasoning-summary-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.missing-seasoning-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-color: rgba(246,162,26,.42);
+  background: linear-gradient(135deg, rgba(246,162,26,.13), rgba(12,10,7,.96));
+}
+
+.missing-seasoning-strip p {
+  margin: 0;
+  color: var(--label-cream, var(--accent-2));
+  font-weight: 800;
+}
+
+.seasoning-product-grid {
+  align-items: stretch;
+}
+
+.seasoning-product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 290px;
+}
+
+.seasoning-card-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--accent-2);
+  font-size: .78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.cabinet-status {
+  margin-top: auto;
+  width: fit-content;
+  border: 1px solid rgba(247,232,194,.18);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: var(--muted);
+  background: rgba(247,232,194,.055);
+  font-weight: 800;
+  font-size: .85rem;
+}
+
+.cabinet-status.owned {
+  color: #140b04;
+  background: linear-gradient(135deg, #ffd36e, #f6a21a);
+  border-color: rgba(255,224,163,.45);
+}
+
+.seasoning-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.seasoning-actions button,
+.seasoning-actions .button-link {
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
+}
+
+.secondary-order-link {
+  background: rgba(247,232,194,.065);
+  color: var(--label-cream, var(--accent-2));
+  border: 1px solid rgba(247,232,194,.20);
+}
+
+@media (max-width: 850px) {
+  .seasoning-summary-panel,
+  .missing-seasoning-strip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .seasoning-actions {
+    grid-template-columns: 1fr;
+  }
+}

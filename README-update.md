@@ -1,31 +1,25 @@
-# Carnivore Companion Visual Refresh
+# Carnivore Companion Seasoning Cabinet Order Update
 
 Replace these files:
 
-- `src/main.jsx`
-- `src/styles.css`
+- src/main.jsx
+- src/styles.css
+- src/data/seasonings.js
 
-This update keeps all v1.4/v1.5 features but changes the visual direction so the app feels closer to the Carnivore Companion storefront and seasoning bottle identity:
+What changed:
 
-- black / cream / gold storefront-style palette
-- free-shipping promo strip
-- seasoning bottle-inspired dashboard hero card
-- stronger product-style cards and buttons
-- sidebar shop CTA
-- mobile topbar polish
+- Seasonings page now acts like a product shelf.
+- Users can add bottles they already own to My Cabinet.
+- Users can remove bottles from My Cabinet.
+- Each seasoning has Order Now / Order More links.
+- Added direct product links for Steak Dust, Taco Shake, Spicy Ranch, Smoke Stack, and Gator Bite.
+- Added Everything Bundle CTA.
 
-No backend changes are required.
-
-Run:
+After replacing files:
 
 ```powershell
 npm run dev
-```
-
-Then commit:
-
-```powershell
 git add .
-git commit -m "Refresh Carnivore Companion visual design"
+git commit -m "Add seasoning cabinet order actions"
 git push
 ```
